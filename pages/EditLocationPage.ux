@@ -1,0 +1,64 @@
+<kontekst.Page ux:Class="EditLocationPage" >
+	<Router ux:Dependency="router" />
+
+	<JavaScript File="EditLocationPage.js" />
+
+	<DockPanel ux:Name="mainview">
+		<Activated>
+      		<Callback Handler="{activatePage}"/>
+    	</Activated>	
+		<StackPanel Background="Black" Dock="Top">
+			<Grid ColumnCount="3" Columns="1*,3*,1*">
+				<kontekst.LowerMenuButton File="../assets/arrow_back.png" Tapped="{goBack}" Alignment="Left"/>
+				<kontekst.Text FontSize="20" TextAlignment="Left" Margin="0,20">Edit location</kontekst.Text>
+				<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/done.png" Alignment="Right" Tapped="{editLocation}"/>	
+			</Grid>			
+		</StackPanel>
+
+		<ScrollView>
+		<StackPanel>
+				<kontekst.Text Value="Name" Alignment="Left" Margin="10"/>
+				<TextView Value="{locationName}" TextWrapping="Wrap" TextColor="Black" CaretColor="Black" Padding="10" AutoCapitalizationHint="Sentences" Margin="5">
+					<Rectangle Layer="Background" Color="White" CornerRadius="4" />
+				</TextView>
+				<kontekst.Text Value="Description" Alignment="Left" Margin="10"/>
+				<TextView Value="{locationDescription}" TextWrapping="Wrap" TextColor="Black" CaretColor="Black" Padding="10" AutoCapitalizationHint="Sentences" Margin="5">
+					<Rectangle Layer="Background" Color="White" CornerRadius="4" />
+				</TextView>		
+				<kontekst.Text Value="GPS" Alignment="Left" Margin="10"/>
+				<Grid ColumnCount="3">
+					<TextView Value="{locationLatitude}" TextWrapping="Wrap" TextColor="Black" CaretColor="Black" Padding="10" AutoCapitalizationHint="Sentences" Margin="5">
+						<Rectangle Layer="Background" Color="White" CornerRadius="4" />
+					</TextView>		
+					<TextView Value="{locationLongtitude}" TextWrapping="Wrap" TextColor="Black" CaretColor="Black" Padding="10" AutoCapitalizationHint="Sentences" Margin="5">
+						<Rectangle Layer="Background" Color="White" CornerRadius="4" />
+					</TextView>		
+					<StackPanel Orientation="Horizontal">
+						<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/map.png" Tapped="{postEntry}" Alignment="Right"/>	
+						<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/my_location.png" Tapped="{setToMyLocation}" Alignment="Right"/>	
+					</StackPanel>
+				</Grid>	
+				<kontekst.Text Value="Radius (meters)" Alignment="Left" Margin="10"/>		
+				<TextView Value="{locationRadius}" TextWrapping="Wrap" TextColor="Black" CaretColor="Black" Padding="10" AutoCapitalizationHint="Sentences" Margin="5">
+					<Rectangle Layer="Background" Color="White" CornerRadius="4" />
+				</TextView>	
+				<kontekst.Text Value="Image" Alignment="Left" Margin="10"/>
+				<WhileTrue Value="{locationImageTaken}">
+	            	<StackPanel Orientation="Horizontal">
+		            	<Panel Margin="3,0,0,0">
+		                	<Image File="{locationImagePath}" Height="80"/>
+		                	<Image File="../assets/test/hexagon_overlay_1.png" Height="90" ZOffset="1"/>
+		            	</Panel>
+		            	<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/clear.png" Tapped="{clearImage}"/>
+		            </StackPanel>	
+	            </WhileTrue>				
+				<StackPanel Orientation="Horizontal">	
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/camera.png" Tapped="{openCamera}"/>	
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/collections.png" Tapped="{openCameraRoll}"/>	
+				</StackPanel>		
+		</StackPanel>
+		</ScrollView>
+
+	</DockPanel>	
+
+</kontekst.Page>

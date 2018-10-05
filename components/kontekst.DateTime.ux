@@ -1,0 +1,91 @@
+<StackPanel Orientation="Horizontal" Height="65" ux:Class="kontekst.DateTime">
+	<string ux:Property="orgDateTimeValue" />
+	<string ux:Property="dateTimeValue" />
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		const moment = require('modules/moment');
+
+		var propDateTime = this.dateTimeValue;
+
+		var propDateTimePattern = Observable("");
+		var dateTimePattern = "dd.mm.yyyy hh.mm";
+		var propDateTimeValid = Observable(true);
+		var oldTime = "";
+
+		function timeChanged() {
+			var newTime = propDateTime.value;
+
+			if(propDateTime.value.length == 2 && oldTime.length == 1) {
+				newTime = propDateTime.value + ".";
+			}
+			else if(propDateTime.value.length == 2 && oldTime.length == 3) {
+				newTime = propDateTime.value.substring(0,1);
+			}
+			else if(propDateTime.value.length == 5 && oldTime.length == 4) {
+				newTime = propDateTime.value + ".";
+			}
+			else if(propDateTime.value.length == 5 && oldTime.length == 6) {
+				newTime = propDateTime.value.substring(0,4);
+			}	
+			else if(propDateTime.value.length == 10 && oldTime.length == 9) {
+				newTime = propDateTime.value + " ";
+			}
+			else if(propDateTime.value.length == 10 && oldTime.length == 11) {
+				newTime = propDateTime.value.substring(0,9);
+			}
+			else if(propDateTime.value.length == 13 && oldTime.length == 12) {
+				newTime = propDateTime.value + ":";
+			}
+			else if(propDateTime.value.length == 13 && oldTime.length == 14) {
+				newTime = propDateTime.value.substring(0,12);
+			}
+			else if(propDateTime.value.length > 16) {
+				newTime = propDateTime.value.substring(0,16);
+			}			
+
+
+			var m = moment(newTime, "DD.MM.YYYY HH:mm");
+
+			if(propDateTime.value.length > 1 && !m.isValid()) {
+				propDateTimeValid.value = false;
+			} 
+			else {
+				propDateTimeValid.value = true;
+			}
+
+			if(propDateTime.value.length > 5 && m.isValid()) {
+				propDateTime.value = newTime;
+			} 
+			else if (propDateTime.value.length > 5) {
+				propDateTime.value = oldTime;
+			}
+			else {
+				propDateTime.value = newTime;
+			}
+
+			if(propDateTime.value.length == 0) {
+				propDateTimePattern.value = dateTimePattern;
+			}
+			else {
+				propDateTimePattern.value = propDateTime.value + dateTimePattern.substring(propDateTime.value.length, dateTimePattern.length);
+			}
+
+			oldTime = propDateTime.value;
+		}
+		module.exports = {		
+			propDateTime : propDateTime,
+			timeChanged : timeChanged,
+			propDateTimePattern : propDateTimePattern,
+			propDateTimeValid : propDateTimeValid
+		};		
+	</JavaScript>
+
+	<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/add_datetime.png" Alignment="Left" Margin="10,0,20,0"/>
+	<Panel>
+		<Text Value="{propDateTimePattern}" HitTestMode="None" Margin="10" Alignment="CenterLeft"/>
+		<TextInput Value="{propDateTime}" Padding="10" TextColor="White" CaretColor="White" Width="170" InputHint="Number" ValueChanged="{timeChanged}" Alignment="CenterLeft" ZOffset="1"/>                         		            			       			
+	</Panel>
+	<WhileTrue Value="{propDateTimeValid}" Invert="true">
+	     <Image File="../assets/bottom_menu_icons/warning.png" Height="30" Margin="5"/>
+	</WhileTrue>       	            			
+</StackPanel>

@@ -1,0 +1,2 @@
+<Text ux:Name="theText" ux:Class="kontekst.TextRegular" Color="White" Font="Regular" FontSize="{UIScaling.normalFontSize}">
+</Text>	

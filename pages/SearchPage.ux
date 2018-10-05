@@ -1,0 +1,64 @@
+<kontekst.Page ux:Class="SearchPage" Background="#fff2">
+	<Router ux:Dependency="router" />
+	<ResourceString Key="TabName" Value="SEARCH" />
+	<FileImageSource ux:Key="Icon" File="../assets/tab_icons/search_white.png" />
+
+    <JavaScript File="SearchPage.js" />
+
+    <Activated>
+        <Callback Handler="{activatePage}"/>
+    </Activated>        
+
+    <DockPanel>
+     <StackPanel Dock="Top" Margin="0,10,0,10">
+     	<Grid ColumnCount="2" Columns="6*,auto">
+	     <TextView Value="{searchForValue}" TextWrapping="Wrap" TextColor="Black" CaretColor="Black" Padding="10" AutoCapitalizationHint="Sentences" Width="90%">
+			<Rectangle Layer="Background" Color="White" CornerRadius="4" />
+		 </TextView>
+		 <kontekst.LowerMenuButton File="../assets/bottom_menu_icons/search.png" Tapped="{refreshSearch}" Margin="0,0,10,0"/>
+		</Grid>
+	</StackPanel>
+
+    <ScrollView ux:Name="theScrollview">
+      	<Scrolled To="End" Within="104" Handler="{increaseLimit}" />
+
+        <StackPanel>
+            <Each Items="{searchResultDisplay}" ux:Name="theEach" Limit="{limit}">
+            <StackPanel Margin="1">
+            	<Grid ColumnCount="2" Columns="6*,auto" Margin="5">
+            		<kontekst.Text Value="{agent.name}" />
+            		<kontekst.Text Value="{created_time_display}" FontSize="12" Alignment="Center"/>
+            	</Grid>
+            	<Image File="{content_image_display}" Width="150" Alignment="Left" Margin="5" Tapped="{goToImageViewPage}" />
+	            <StackPanel Margin="10">
+	    			<kontekst.Text Value="{content_text}" TextWrapping="Wrap"/>
+	            </StackPanel>
+				<Grid ColumnCount="2" Columns="6*,1.5*" >	
+					<kontekst.Text Value="{time_location_display}" TextWrapping="Wrap" Margin="5" TextAlignment="Left" FontSize="12"/>	
+					<kontekst.Text Value="{importance_display}" TextWrapping="Wrap" Margin="5" TextAlignment="Right"/>
+				</Grid>
+	            <Rectangle Layer="Background" Color="Black" CornerRadius="4"/>
+	        </StackPanel>    
+            </Each>
+
+			<WhileScrolled To="Start">
+				<Change scrollToEndButton.Visibility="Hidden"/>
+			</WhileScrolled>            
+        </StackPanel>
+     </ScrollView>    
+
+	<Image File="../assets/menu_icons/logo6_tiny_inverted.png" Margin="30" Width="80pt" ZOffset="1" Visibility="{searchInProgress}">
+		<WhileVisible>
+			<Spin Frequency="4" />
+		</WhileVisible>
+	</Image>     	
+
+     <kontekst.LowerMenuButton ux:Name="scrollToEndButton" File="../assets/bottom_menu_icons/uparrow.png" Tapped="{scrollToTop}" ZOffset="1" Alignment="TopRight"/>
+     <Panel Alignment="BottomRight" ZOffset="1">
+		<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/favorite.png" Tapped="{changeImportanceFilter}" Opacity="{importanceFilterOpacity}"/>
+		<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/favorite_border.png"/>
+	</Panel>
+
+    </DockPanel>	
+
+</kontekst.Page>	

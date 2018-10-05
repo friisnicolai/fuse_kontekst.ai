@@ -1,0 +1,33 @@
+<App Background="#000000">
+	<Router ux:Name="router"/>
+	
+	<JavaScript File="MainView.js" />
+
+	<WhileWindowSize GreaterThan="0,0" >
+		<Callback Handler="{UIScaling.tablet}" />
+		<DebugAction Message="test" />
+	</WhileWindowSize>	
+
+	<WhileWindowSize LessThan="599,99999" >
+		<Callback Handler="{UIScaling.phone}" />
+	</WhileWindowSize>	
+
+	<iOS.StatusBarConfig Style="Light" />
+	<Android.StatusBarConfig Color="#000000" />
+
+	<ClientPanel>
+		<Navigator DefaultPath="home">
+			<SplashPage ux:Template="splash" router="router"/>
+			<!-- <HomePage ux:Template="home" router="router"/> -->
+			<ContainerPage ux:Template="home" router="router"/>
+			<AgentPage ux:Template="agentpage" router="router"/>
+			<ImageViewPage ux:Template="imageviewpage" router="router"/>
+			<AddLocationPage ux:Template="addlocationpage" router="router" />
+			<LocationsOverviewPage ux:Template="selectLocation" router="router" />
+			<LocationPage ux:Template="locationpage" router="router" />
+			<EditLocationPage ux:Template="editlocationpage" router="router" />
+			<StoragePage ux:Template="storagepage" router="router" />
+			<EntryPage ux:Template="entrypage" router="router" />
+		</Navigator>
+	</ClientPanel>
+</App>

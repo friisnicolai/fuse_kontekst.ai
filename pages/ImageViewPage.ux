@@ -1,0 +1,12 @@
+<kontekst.Page ux:Class="ImageViewPage" >
+	<Router ux:Dependency="router" />
+
+	<JavaScript File="ImageViewPage.js" />
+		<Activated>
+	      	<Callback Handler="{log}"/>
+	    </Activated>
+
+	<Image File="{imageFile}" />
+
+
+</kontekst.Page>	

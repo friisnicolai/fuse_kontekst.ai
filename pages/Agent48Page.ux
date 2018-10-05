@@ -1,0 +1,12 @@
+<kontekst.Page ux:Class="Agent48Page">
+	<ResourceString Key="TabName" Value="SEARCH" />
+	<FileImageSource ux:Key="Icon" File="../assets/tab_icons/search_white.png" />
+
+	<Image File="../assets/icon6_master.png" Opacity="1" Margin="50">
+		<WhilePressed>
+			<Scale Factor=".3" Duration="5" Easing="QuadraticOut" />
+			<Rotate Degrees="90" Duration="5"/>
+		</WhilePressed>
+	</Image>
+
+</kontekst.Page>

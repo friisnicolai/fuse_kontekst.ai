@@ -1,0 +1,3 @@
+<Panel ux:Class="kontekst.Hamburger" HitTestMode="LocalBoundsAndChildren">
+	<Image File="../assets/icon_hamburger.png" Alignment="Right" Margin="10" Width="20pt"/>
+</Panel>

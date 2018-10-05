@@ -1,0 +1,5 @@
+<Image ux:Class="kontekst.ProgressSpinner" File="../assets/menu_icons/logo6_tiny_inverted.png" Margin="30" Width="80pt" ZOffset="1" Visibility="Hidden">
+	<WhileVisible>
+		<Spin Frequency="4" />
+	</WhileVisible>
+</Image>

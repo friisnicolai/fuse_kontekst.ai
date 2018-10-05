@@ -1,0 +1,1 @@
+<Text ux:Class="kontekst.TextLightSmall" Color="White" Font="Light" FontSize="{UIScaling.smallFontSize}"/>

@@ -1,0 +1,37 @@
+<kontekst.Page ux:Class="SbankenPage">
+	
+	<JavaScript File="SbankenPage.js" />
+
+    <DockPanel ux:Name="mainview">
+        <StackPanel Background="Black" Dock="Top">
+            
+                <kontekst.Text FontSize="20" TextAlignment="Left" Margin="10,20">{accountName} ({accountNumber})</kontekst.Text>   
+     
+            <kontekst.TextGrey Value="Balance {accountBalance}" TextAlignment="Right" Margin="0,0,10,10"/>
+            <kontekst.Separator/>       
+        </StackPanel>
+
+        <ScrollView>
+            <StackPanel Alignment="Bottom">
+                <Each Items="{transactions}"> 
+                    <kontekst.Separator/>     
+                    <StackPanel HitTestMode="LocalBoundsAndChildren" Margin="0,10,0,10">
+                        <Grid ColumnCount="2" Columns="6*,1.5*" >
+                            <kontekst.Text Value="{text}" TextWrapping="Wrap" Margin="5"/>  
+                            <kontekst.TextGrey Value="{amount}" TextWrapping="Wrap" Margin="5" TextAlignment="Right" FontSize="12"/>  
+                        </Grid>
+                        <Grid ColumnCount="2" Columns="6*,1.5*" >   
+                            <kontekst.TextGrey Value="{transactionType} - {accountingDate}" TextWrapping="Wrap" Margin="5" TextAlignment="Left" FontSize="12"/> 
+                            <kontekst.Text Value="{importance_display}" TextWrapping="Wrap" Margin="5" TextAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>    
+                </Each>
+            </StackPanel>
+        </ScrollView>         
+
+        <StackPanel Dock="Bottom">
+            <Button Text="Test Fetch" Clicked="{refresh}" />
+        </StackPanel>
+
+     </DockPanel>      
+</kontekst.Page>

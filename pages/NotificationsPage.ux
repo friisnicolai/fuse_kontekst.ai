@@ -1,0 +1,6 @@
+<kontekst.Page ux:Class="NotificationsPage">
+	<ResourceString Key="TabName" Value="NOTIFICATIONS" />
+	<FileImageSource ux:Key="Icon" File="../assets/tab_icons/notifications.png" />
+
+
+</kontekst.Page>

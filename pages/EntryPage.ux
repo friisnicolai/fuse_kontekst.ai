@@ -1,0 +1,87 @@
+<kontekst.Page ux:Class="EntryPage" Background="#fff2">
+	<Router ux:Dependency="router" />
+
+	<JavaScript File="EntryPage.js" />
+
+	<DockPanel ux:Name="mainview">
+		<Activated>
+      		<Callback Handler="{activatePage}"/>
+    	</Activated>   
+
+    	<kontekst.ProgressSpinner Visibility="{progressSpinning}"/>
+
+		<StackPanel Background="Black" Dock="Top">
+			<Grid ColumnCount="3" Columns="1*,3*,1*">
+				<kontekst.LowerMenuButton File="../assets/arrow_back.png" Tapped="{goBack}" Alignment="Left"/>
+				<kontekst.Text FontSize="20" TextAlignment="Left" Margin="0,20">Edit entry</kontekst.Text>
+				<WhileTrue Value="{valuesChanged}">
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/done.png" Alignment="Right" Tapped="{editEntry}"/>	
+				</WhileTrue>	
+			</Grid>			
+		</StackPanel>
+
+		<ScrollView>
+			<StackPanel>
+				<StackPanel Background="Black">
+					<kontekst.Text Value="{entryCreatedTimeDisplay}" TextWrapping="Wrap" Margin="5" TextAlignment="Right" FontSize="12" Background="Black"/>
+				</StackPanel>
+
+				<WhileTrue Value="{displayEntryContentTime}">
+					<Grid ColumnCount="2">
+						<kontekst.DateTime orgDateTimeValue="{entryContentTime}" dateTimeValue="{entryContentTime}"/>
+	            		<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/clear.png" Tapped="{removeDateTime}" Alignment="Right" Margin="10"/>	
+	            		<Rectangle Layer="Background" Color="Black" CornerRadius="4" Margin="3" />
+	            	</Grid>		
+            	</WhileTrue>
+            	
+            	<WhileTrue Value="{entryLocationSetFlag}">	
+            		<Grid ColumnCount="2">	
+		            <StackPanel Height="65" Orientation="Horizontal">
+		                <Panel Margin="3,0,0,0">
+		                    <Image File="{entryLocationImage}" Height="40"/>
+		                    <Image File="../assets/test/hexagon_overlay_1.png" Height="50" ZOffset="1"/>
+		                </Panel>
+		                <StackPanel Margin="10,2,0,0">
+		                    <kontekst.Text Value="{entryLocationName}" Margin="1,8" />
+		                    <kontekst.TextGrey Value="{entryLocationDescription}" Margin="0" FontSize="15"/>
+		                </StackPanel> 
+		            </StackPanel>
+		            <kontekst.LowerMenuButton File="../assets/bottom_menu_icons/clear.png" Tapped="{clearLocation}" Alignment="Right" Margin="10"/>
+		            <Rectangle Layer="Background" Color="Black" CornerRadius="4" Margin="3" />
+		        	</Grid>
+	           	</WhileTrue>
+				
+				<TextView Value="{entryContentText}" TextWrapping="Wrap" TextColor="White" CaretColor="White" Padding="10" AutoCapitalizationHint="Sentences" Margin="3" MinHeight="65">
+					<Rectangle Layer="Background" Color="Black" CornerRadius="4" />
+				</TextView>
+
+				<WhileTrue Value="{entryImageSetFlag}">
+					<Grid ColumnCount="2">
+						<Image File="{entryImageDisplay}" Width="150" Alignment="Left" Margin="10"/>
+						<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/clear.png" Alignment="TopRight" Margin="10" Tapped="{clearImage}"/>
+						<Rectangle Layer="Background" Color="Black" CornerRadius="4" Margin="3" />	
+					</Grid>		
+				</WhileTrue>
+			</StackPanel>
+		</ScrollView>		
+
+		<StackPanel Background="Black" Dock="Bottom">
+			<Grid ColumnCount="2">
+				<StackPanel Orientation="Horizontal">
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/camera.png" Tapped="{openCamera}"/>	
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/collections.png" Tapped="{openCameraRoll}"/>	
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/attachment.png"/>
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/add_location.png" Tapped="{openSelectLocation}"/>
+					<WhileTrue Value="{displayEntryContentTime}" Invert="true">	
+						<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/add_datetime.png" Tapped="{addDateTime}"/>
+					</WhileTrue>	
+				</StackPanel>
+				<WhileTrue Value="{valuesChanged}">
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/cancel.png" Tapped="{revertEdit}" Alignment="Right"/>
+				</WhileTrue>	
+			</Grid>
+		</StackPanel>	
+
+	</DockPanel>		
+
+</kontekst.Page>	

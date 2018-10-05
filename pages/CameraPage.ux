@@ -1,0 +1,15 @@
+<kontekst.Page ux:Class="CameraPage">
+	
+	<JavaScript File="CameraPage.js" />
+
+<StackPanel>
+    <Text>Camera</Text>
+
+
+    <Button Text="Camera" Clicked="{openCamera}" />
+    <Button Text="Roll" Clicked="{openCameraRoll}" />
+
+    <Image File="{image}" Width="40"/>
+</StackPanel>
+
+</kontekst.Page>

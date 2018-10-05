@@ -1,0 +1,56 @@
+<kontekst.Page ux:Class="ContainerPage">
+	<JavaScript File="ContainerPage.js" />
+
+	<Router ux:Dependency="router" />
+
+	<DockPanel ux:Name="containerPageMainview">
+        <StackPanel Background="Black" Dock="Top">
+            <Grid ColumnCount="3" Columns="1*,6*,2*">
+            	<Image File="../assets/logo6_tiny_white.png" Margin="10" Width="40pt" HitTestMode="LocalBoundsAndChildren" Tapped="{openKontekst}"/>
+                <kontekst.Text FontSize="20" TextAlignment="Center" Margin="10,20"></kontekst.Text> 
+                <StackPanel Orientation="Horizontal" ContentAlignment="Right">
+                	<WhileTrue Value="{syncStatus.running}">
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/google-drive.png" Tapped="{goToStoragePage}">
+						<WhileTrue Value="true">
+							<Spin Frequency="1" />
+						</WhileTrue>
+					</kontekst.LowerMenuButton>             
+					</WhileTrue>   	
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/backup.png" Tapped="{goToStoragePage}"/>
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/more_horiz.png" Tapped="{goTo22}"/>
+				</StackPanel>
+            </Grid>  
+    
+        </StackPanel>
+		<PageIndicator Dock="Bottom" Navigation="containerControl">
+		    <GridLayout ColumnCount="4" Columns="6*,6*,6*,6*" ContentAlignment="Center" />
+		    <StackPanel ux:Template="Dot" HitTestMode="LocalBoundsAndChildren">
+		    	<Rectangle Height="1" Fill="#fff4" ux:Name="tabSelectedLine" Margin="0,0,0,5"/>
+		    	<Image ux:Name="icon" Source="{Page Icon}" Height="30" Margin="0,0,0,10"/>
+		    	<!-- <kontekst.Text Value="{Page TabName}" Alignment="Center" Margin="0,0,0,10"/> -->
+
+		    	<ActivatingAnimation>
+            		<Change tabSelectedLine.Fill="#ffff" />
+            		<Scale Target="icon" Factor="1.2" />
+
+        		</ActivatingAnimation>
+        	    <Clicked>
+                    <NavigateTo Target="{Page Visual}"/>
+                </Clicked>	
+		    </StackPanel>
+
+		</PageIndicator>
+		
+
+		<PageControl ux:Name="containerControl">
+	    	<AgentOverviewPage router="router" ux:Name="AgentOverview"/>
+	    	<LocationsOverviewPage router="router" ux:Name="LocationsOverview"/>
+	    	<NotificationsPage ux:Name="NotificationsOverview" />
+	    	<SearchPage router="router" ux:Name="SearchPage"/>
+
+	    	<NavigationMotion GotoDuration="0.3"/>
+		</PageControl>
+
+	</DockPanel>
+
+</kontekst.Page>

@@ -1,0 +1,9 @@
+<kontekst.Page ux:Class="Agent47Page">
+
+	<Image File="../assets/art1.png" Opacity=".7" Margin="90">
+		<WhilePressed>
+			<Scale Factor=".95" Duration=".08" Easing="QuadraticOut" />
+		</WhilePressed>
+	</Image>
+
+</kontekst.Page>

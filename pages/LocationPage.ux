@@ -1,0 +1,137 @@
+<kontekst.Page ux:Class="LocationPage" >
+	<Router ux:Dependency="router" />
+
+	<JavaScript File="LocationPage.js" />
+    	
+	<Activated>
+      	<Callback Handler="{activate}"/>
+    </Activated>
+
+	<Deactivated>
+  		<Callback Handler="{deactivate}"/>
+	</Deactivated>
+
+    <DockPanel ux:Name="locationPageMainview">
+		<StackPanel Background="Black" Dock="Top">
+			<Grid ColumnCount="2" Columns="1*,5*">
+				<StackPanel Orientation="Horizontal">
+					<kontekst.LowerMenuButton File="../assets/arrow_back.png" Tapped="{goBack}" Alignment="Left"/>
+					<kontekst.Text ux:Name="locationNameHeader" FontSize="18" TextAlignment="Left" Margin="0,20" Value="{location.name}" Width="150"/>	
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" ContentAlignment="Right">
+					<WhileTrue ux:Name="showMoreActions">	
+						<StackPanel Orientation="Horizontal" Alignment="Right">
+							<kontekst.LowerMenuButton ux:Name="pastFilterButton" File="../assets/bottom_menu_icons/visibility_off.png" Tapped="{changePastFilter}" Opacity="0.2">
+								<WhileTrue Value="{pastFilter}">
+									<Change pastFilterButton.Opacity="1"/>
+								</WhileTrue>		
+							</kontekst.LowerMenuButton>	
+							<kontekst.LowerMenuButton ux:Name="pastModeButton" File="../assets/bottom_menu_icons/history.png" Tapped="{togglePastMode}" Opacity="0.2"/>
+							<WhileTrue Value="{pastMode}">
+								<Change pastModeButton.Opacity="1"/>
+							</WhileTrue>					
+							<kontekst.LowerMenuButton ux:Name="futureModeButton" File="../assets/bottom_menu_icons/timeline.png" Tapped="{toggleFutureMode}" Opacity="0.2"/>
+							<WhileTrue Value="{futureMode}">
+								<Change futureModeButton.Opacity="1"/>
+							</WhileTrue>	
+							<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/mode_edit.png" Tapped="{goToEditLocationsPage}"/>			
+						</StackPanel>
+
+						<Change locationNameHeader.Width="50"/>
+					</WhileTrue>							
+					<Panel>
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/favorite.png" Tapped="{changeImportanceFilter}" Opacity="{importanceFilterOpacity}"/>
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/favorite_border.png"/>
+					</Panel>
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/more_horiz.png">
+						<Tapped>
+							<Toggle Target="showMoreActions" />
+						</Tapped>	
+					</kontekst.LowerMenuButton>	
+				</StackPanel>					
+			</Grid>	
+		</StackPanel>
+
+		<ScrollView ux:Name="locationPageScrollview">
+			<Scrolled To="Start" Within="104" Handler="{decreaseOffset}" />
+			
+			<StackPanel Alignment="Bottom">
+				<Each Items="{entriesDisplay}" ux:Name="theEach" Offset="{offset}" >	
+					<kontekst.Separator/>
+					<StackPanel>
+					<Image File="{content_image_display}" Width="150" Alignment="Left" Margin="5" Tapped="{goToImageViewPage}"/>	
+					<Panel ux:Name="entryPanel">
+
+					<StackPanel HitTestMode="LocalBoundsAndChildren" Margin="0,10,0,10" ux:Name="entryData">
+						<Grid ColumnCount="2" Columns="6*,1.5*" >
+							<StackPanel>
+								<kontekst.Text Value="{content_text}" TextWrapping="Wrap" Margin="5"/>	
+							</StackPanel>
+							<kontekst.Text Value="{created_time_display}" TextWrapping="Wrap" Margin="5" TextAlignment="Right" FontSize="12"/>	
+						</Grid>
+						<Grid ColumnCount="2" Columns="6*,1.5*" >	
+							<kontekst.Text Value="{content_time_display}" TextWrapping="Wrap" Margin="5" TextAlignment="Left" FontSize="12"/>	
+							<kontekst.Text Value="{importance_display}" TextWrapping="Wrap" Margin="5" TextAlignment="Right"/>
+						</Grid>
+						<SwipeGesture ux:Name="swipeLeft" Direction="Left" Length="200" />
+    					<SwipingAnimation Source="swipeLeft">
+        					<Move X="-200" />
+    					</SwipingAnimation>
+    					<Swiped Source="swipeLeft">
+    						<Callback Handler="{swipedLeft}"/>
+        					<Scale Factor="0.5" Duration="0.4" DurationBack="0.2" />
+    					</Swiped>
+
+    					<SwipeGesture ux:Name="swipeRight" Direction="Right" Length="200" />
+    					<SwipingAnimation Source="swipeRight">
+        					<Move X="200" />
+    					</SwipingAnimation>
+    					<Swiped Source="swipeRight">
+    						<Callback Handler="{swipedRight}"/>
+        					<Scale Factor="0.0" Duration="0.4" DurationBack="0.2" />
+    					</Swiped>  	
+					</StackPanel>
+					
+
+					<!-- Entry actions panel / menu -->
+					<StackPanel ux:Name="entryAction" Opacity="0" HitTestMode="LocalBoundsAndChildren">
+						<Grid ColumnCount="5" Columns="3*,1.5*,1.5*,1.5*,4*">
+							<Text Value="" />
+							<Image File="../assets/menu_icons/logo6_tiny_inverted.png" Margin="30" Width="30pt" />
+							<Image File="../assets/menu_icons/star_swipe_inverted_1.png" Margin="30" Width="30pt"/>
+							<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/visibility_off.png" Tapped="{addToPast}"/>
+						</Grid>
+					</StackPanel>
+
+					<Clicked>
+						<Toggle Target="showEntryAction" />
+					</Clicked>
+					<WhileTrue ux:Name="showEntryAction">
+						<Change entryData.HitTestMode="None"/>
+						<Change entryData.Opacity="0.2" Duration="0.4" DurationBack="0.15" DelayBack="0"/>
+
+						<Change entryAction.Opacity="1" Duration="0.4" DurationBack="0.15" DelayBack="0"/>
+					</WhileTrue>						
+					
+					</Panel>
+					</StackPanel>
+				</Each>
+				
+				<!-- Display / hide scroll to end button control -->
+				<WhileScrolled To="End">
+					<Change scrollToEndButton.Visibility="Hidden"/>
+				</WhileScrolled>
+
+			</StackPanel>
+		</ScrollView>	
+
+		<Image File="../assets/menu_icons/logo6_tiny_inverted.png" Margin="30" Width="80pt" ZOffset="1" Visibility="{postInProgress}">
+			<WhileVisible>
+				<Spin Frequency="4" />
+			</WhileVisible>
+		</Image>
+
+		<kontekst.LowerMenuButton ux:Name="scrollToEndButton" File="../assets/bottom_menu_icons/downarrow.png" Tapped="{scrollToBottom}" ZOffset="1" Alignment="BottomRight"/>
+    </DockPanel>
+
+</kontekst.Page>

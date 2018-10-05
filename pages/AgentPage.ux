@@ -1,0 +1,199 @@
+<kontekst.Page ux:Class="AgentPage" >
+	<Router ux:Dependency="router" />
+
+	<JavaScript File="AgentPage.js" />  	
+    
+	<Activated>
+      	<Callback Handler="{activate}"/>
+    </Activated>
+
+	<Deactivated>
+  		<Callback Handler="{deactivate}"/>
+	</Deactivated>
+
+	<DockPanel ux:Name="mainview">
+		<StackPanel Background="Black" Dock="Top">
+			<Grid ColumnCount="2" Columns="1*,5*" ContentAlignment="Left">
+				<StackPanel Orientation="Horizontal">
+					<Image File="../assets/arrow_back.png" Margin="10" Width="30pt" Clicked="{goBack}"/>
+					<kontekst.TextPageHeader ux:Name="agentNameHeader" Margin="0,20" Value="{agent.name}" Width="150"/>	
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" ContentAlignment="Right">
+					<WhileTrue ux:Name="showMoreActions">	
+						<StackPanel Orientation="Horizontal" Alignment="Right">
+							<kontekst.LowerMenuButton ux:Name="pastFilterButton" File="../assets/bottom_menu_icons/visibility_off.png" Tapped="{changePastFilter}" Opacity="0.2">
+								<WhileTrue Value="{pastFilter}">
+									<Change pastFilterButton.Opacity="1"/>
+								</WhileTrue>		
+							</kontekst.LowerMenuButton>	
+							<kontekst.LowerMenuButton ux:Name="pastModeButton" File="../assets/bottom_menu_icons/history.png" Tapped="{togglePastMode}" Opacity="0.2"/>
+							<WhileTrue Value="{pastMode}">
+								<Change pastModeButton.Opacity="1"/>
+							</WhileTrue>					
+							<kontekst.LowerMenuButton ux:Name="futureModeButton" File="../assets/bottom_menu_icons/timeline.png" Tapped="{toggleFutureMode}" Opacity="0.2"/>
+							<WhileTrue Value="{futureMode}">
+								<Change futureModeButton.Opacity="1"/>
+							</WhileTrue>				
+						</StackPanel>
+
+						<Change agentNameHeader.Width="50"/>
+					</WhileTrue>							
+					<Panel>
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/favorite.png" Tapped="{changeImportanceFilter}" Opacity="{importanceFilterOpacity}"/>
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/favorite_border.png"/>
+					</Panel>
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/more_horiz.png">
+						<Tapped>
+							<Toggle Target="showMoreActions" />
+						</Tapped>	
+					</kontekst.LowerMenuButton>	
+				</StackPanel>	
+			</Grid>	
+	
+		</StackPanel>
+
+		<ScrollView ux:Name="theScrollview">
+			<Scrolled To="Start" Within="104" Handler="{decreaseOffset}" />
+			
+			<StackPanel Alignment="Bottom">
+				<Each Items="{entriesDisplay}" ux:Name="theEach" Offset="{offset}" >	
+					<kontekst.Separator/>
+					<StackPanel>
+					<Image File="{content_image_display}" Width="150" Alignment="Left" Margin="5" Tapped="{goToImageViewPage}"/>	
+					<Panel ux:Name="entryPanel">
+
+					<StackPanel HitTestMode="LocalBoundsAndChildren" Margin="0,10,0,10" ux:Name="entryData">
+						<Grid ColumnCount="2" Columns="6*,1.5*" >
+							<StackPanel>
+								<kontekst.TextLight Value="{content_text}" TextWrapping="Wrap" Margin="5"/>	
+							</StackPanel>
+							<kontekst.TextLightSmall Value="{created_time_display}" TextWrapping="Wrap" Margin="5" TextAlignment="Right"/>	
+						</Grid>
+						<Grid ColumnCount="2" Columns="6*,1.5*" >	
+							<kontekst.TextRegularSmall Value="{time_location_display}" TextWrapping="Wrap" Margin="5" TextAlignment="Left"/>	
+							<kontekst.TextRegular Value="{importance_display}" TextWrapping="Wrap" Margin="5" TextAlignment="Right"/>
+						</Grid>
+						<SwipeGesture ux:Name="swipeLeft" Direction="Left" Length="200" />
+    					<SwipingAnimation Source="swipeLeft">
+        					<Move X="-200" />
+    					</SwipingAnimation>
+    					<Swiped Source="swipeLeft">
+    						<Callback Handler="{swipedLeft}"/>
+        					<Scale Factor="0.5" Duration="0.4" DurationBack="0.2" />
+    					</Swiped>
+
+    					<SwipeGesture ux:Name="swipeRight" Direction="Right" Length="200" />
+    					<SwipingAnimation Source="swipeRight">
+        					<Move X="200" />
+    					</SwipingAnimation>
+    					<Swiped Source="swipeRight">
+    						<Callback Handler="{swipedRight}"/>
+        					<Scale Factor="0.0" Duration="0.4" DurationBack="0.2" />
+    					</Swiped>  	
+					</StackPanel>
+					
+
+
+					<!-- Entry actions panel / menu -->
+					<StackPanel ux:Name="entryAction" Opacity="0" HitTestMode="LocalBoundsAndChildren" ContentAlignment="Center">
+						<Grid ColumnCount="2">
+							<StackPanel Orientation="Horizontal">
+								<WhileTrue Value="{has_location}">	
+									<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/place.png" Tapped="{goToLocationPage}"/>
+								</WhileTrue>
+								<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/visibility_off.png" Tapped="{addToPast}"/>	
+							</StackPanel>
+							<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/mode_edit.png" Tapped="{goToEntryPage}" Alignment="Right"/>
+						</Grid>
+					</StackPanel>
+
+					<Clicked>
+						<Toggle Target="showEntryAction" />
+					</Clicked>
+					<WhileTrue ux:Name="showEntryAction">
+						<Change entryData.HitTestMode="None"/>
+						<Change entryData.Opacity="0.2" Duration="0.4" DurationBack="0.15" DelayBack="0"/>
+
+						<Change entryAction.Opacity="1" Duration="0.4" DurationBack="0.15" DelayBack="0"/>
+					</WhileTrue>						
+					
+					</Panel>
+					</StackPanel>
+				</Each>
+				
+				<!-- Display / hide scroll to end button control -->
+				<WhileScrolled To="End">
+					<Change scrollToEndButton.Visibility="Hidden"/>
+				</WhileScrolled>
+
+			</StackPanel>
+		</ScrollView>
+
+		<Image File="../assets/menu_icons/logo6_tiny_inverted.png" Margin="30" Width="80pt" ZOffset="1" Visibility="{postInProgress}">
+			<WhileVisible>
+				<Spin Frequency="4" />
+			</WhileVisible>
+		</Image>
+
+		<kontekst.LowerMenuButton ux:Name="scrollToEndButton" File="../assets/bottom_menu_icons/downarrow.png" Tapped="{scrollToBottom}" ZOffset="1" Alignment="BottomRight"/>
+
+
+
+		
+		<!-- Bottom input and actions -->
+		<StackPanel Background="Black" Dock="Bottom">
+			<!-- <Grid ColumnCount="1" Columns="6*,1*" Margin="0,6,0,0"> -->
+			<TextView Value="{entryText}" TextWrapping="Wrap" TextColor="Black" CaretColor="Black" Padding="10" AutoCapitalizationHint="Sentences">
+				<Rectangle Layer="Background" Color="White" CornerRadius="4" />
+			</TextView>
+			<WhileTrue Value="{entryImageTaken}">
+				<StackPanel Orientation="Horizontal">
+					<Image File="{entryImage.path}" Width="80" Alignment="Left" Margin="5"/>
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/clear.png" Tapped="{clearEntryImage}"/>
+				</StackPanel>
+			</WhileTrue>
+			<WhileTrue Value="{entryLocationAdded}">
+	            <StackPanel Height="65" Orientation="Horizontal">
+	                <Panel Margin="3,0,0,0">
+	                    <Image File="{entryLocation.location_image_display}" Height="40"/>
+	                    <Image File="../assets/test/hexagon_overlay_1.png" Height="50" ZOffset="1"/>
+	                </Panel>
+	                <StackPanel Margin="10,2,0,0">
+	                    <kontekst.Text Value="{entryLocation.name}" Margin="1,8" />
+	                    <kontekst.TextGrey Value="{entryLocation.description}" Margin="0" FontSize="15"/>
+	                </StackPanel> 
+	                <kontekst.LowerMenuButton File="../assets/bottom_menu_icons/clear.png" Tapped="{clearEntryLocation}"/>
+	            </StackPanel>  
+            </WhileTrue>  
+            <WhileTrue Value="{displayAddFutureTime}">
+            	<StackPanel Orientation="Horizontal" Margin="5">
+            		<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/add_datetime.png" Tapped="{addFutureTime}"/>
+            		<Panel>
+            			<Text Value="{futureTimePattern}" HitTestMode="None" Margin="10" TextColor="White"/>
+	            		<TextBox Value="{futureTime}" Padding="10" TextColor="White" CaretColor="White" Width="170" InputHint="Number" ValueChanged="{futureTimeChanged}" />
+            		</Panel>
+                    <WhileTrue Value="{futureTimeValid}" Invert="true">
+                         <Image File="../assets/bottom_menu_icons/warning.png" Height="30" Margin="5"/>
+                    </WhileTrue>       	            			
+            		<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/clear.png" Tapped="{removeFutureTime}" />	
+            	</StackPanel>	
+            </WhileTrue>	
+
+			<!--</Grid> -->
+			<Grid ColumnCount="2" Columns="1*,6*" Margin="0,3,0,0">
+				<StackPanel Orientation="Horizontal">
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/camera.png" Tapped="{openCamera}"/>	
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/collections.png" Tapped="{openCameraRoll}"/>	
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/attachment.png"/>
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/add_location.png" Tapped="{openSelectLocation}"/>
+				<WhileTrue Value="{displayAddFutureTime}" Invert="true">	
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/add_datetime.png" Tapped="{addFutureTime}"/>
+				</WhileTrue>	
+				</StackPanel>
+				<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/send.png" Tapped="{postEntry}" Alignment="Right"/>
+					
+			</Grid>
+		</StackPanel>
+	</DockPanel>
+
+</kontekst.Page>

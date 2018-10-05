@@ -1,0 +1,139 @@
+<kontekst.Page ux:Class="StoragePage" >
+	<Router ux:Dependency="router" />
+
+	<JavaScript File="StoragePage.js" />
+
+	<DockPanel ux:Name="mainview">
+		<StackPanel Background="Black" Dock="Top">
+			<Grid ColumnCount="3" Columns="1*,3*,1*">
+				<kontekst.LowerMenuButton File="../assets/arrow_back.png" Tapped="{goBack}" Alignment="Left"/>
+				<kontekst.Text FontSize="20" TextAlignment="Left" Margin="0,20">Storage</kontekst.Text>
+			</Grid>			
+		</StackPanel>
+
+		<ScrollView>
+		<StackPanel>
+			<kontekst.Separator />			
+			<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren">
+				<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/backup.png" />
+				<kontekst.Text FontSize="16" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">Backup</kontekst.Text>
+                <WhilePressed>
+                    <Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+                </WhilePressed>		
+				<Tapped>
+					<Toggle Target="showBackupAction" />
+				</Tapped>                		
+			</StackPanel>	
+			<WhileTrue ux:Name="showBackupAction">
+				<Grid ColumnCount="2" Margin="40,0,0,0">	
+					<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren" Tapped="{backupNow}">
+						<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/content_copy.png">
+							<WhileTrue Value="{backupStatus.running}">
+								<Spin Frequency="1" />
+							</WhileTrue>
+						</kontekst.LowerMenuButton>	
+						<kontekst.Text FontSize="15" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">Create backup</kontekst.Text>
+		                <WhilePressed>
+		                    <Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+		                </WhilePressed>				
+					</StackPanel>
+					<kontekst.TextGrey Value="" FontSize="12" Alignment="CenterRight" Margin="0,0,10,0"/>
+					<Each Items="{backupList}">
+						<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren">
+							<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/insert_drive_file.png" />
+							<kontekst.Text FontSize="15" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">{name}</kontekst.Text>	
+						</StackPanel>	
+						<kontekst.TextGrey Value="" FontSize="12" Alignment="CenterRight" Margin="0,0,10,0"/>
+					</Each>	
+				</Grid>	
+			</WhileTrue>						
+			<kontekst.Separator />		
+			<WhileTrue Value="{connectedGoogleDrive.connected}" Invert="true">		
+				<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren" Tapped="{connectGoogleDrive}">
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/google-drive.png" />
+					<kontekst.Text FontSize="16" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">Connect Google Drive</kontekst.Text>
+	                <WhilePressed>
+	                    <Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+	                </WhilePressed>				
+				</StackPanel>	
+				<WhileTrue Value="{connectedGoogleDrive.connecting}">
+					<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren" Tapped="{cancelConnectGoogleDrive}">
+						<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/clear.png" />
+						<kontekst.Text FontSize="15" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">Connecting...</kontekst.Text>
+		                <WhilePressed>
+		                    <Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+		                </WhilePressed>				
+					</StackPanel>
+				</WhileTrue>					
+			</WhileTrue>
+			<WhileTrue Value="{connectedGoogleDrive.connected}">		
+				<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren">
+					<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/google-drive.png" />
+					<kontekst.Text FontSize="16" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">Google Drive ({connectedGoogleDrive.userinfo.user.email})</kontekst.Text>
+	                <WhilePressed>
+	                    <Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+	                </WhilePressed>		
+					<Tapped>
+						<Toggle Target="showGoogleDriveAction" />
+					</Tapped>	                		
+				</StackPanel>
+
+				<WhileTrue ux:Name="showGoogleDriveAction">
+				<Grid ColumnCount="2" Margin="40,0,0,0">	
+					<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren" Tapped="{synchronizeGoogleDrive}">
+						<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/sync.png">
+							<WhileTrue Value="{syncStatus.running}">
+								<Spin Frequency="1" />
+							</WhileTrue>
+						</kontekst.LowerMenuButton>	
+						<kontekst.Text FontSize="15" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">Synchronize</kontekst.Text>
+		                <WhilePressed>
+		                    <Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+		                </WhilePressed>				
+					</StackPanel>
+					<WhileTrue Value="{syncStatus.running}">
+						<kontekst.TextGrey Value="{syncStatus.message}" FontSize="12" Alignment="CenterRight" Margin="0,0,10,0"/>
+					</WhileTrue>	
+					<WhileTrue Value="{syncStatus.running}" Invert="true">
+						<kontekst.TextGrey Value="Last {connectedGoogleDrive.last_sync_display}" FontSize="12" Alignment="CenterRight" Margin="0,0,10,0"/>
+					</WhileTrue>					
+					<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren" Tapped="{connectGoogleD}">
+						<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/schedule.png" />
+						<kontekst.Text FontSize="15" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">Auto sync.</kontekst.Text>
+		                <WhilePressed>
+		                    <Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+		                </WhilePressed>				
+					</StackPanel>
+					<kontekst.TextGrey Value="Off" FontSize="12" Alignment="CenterRight" Margin="0,0,10,0"/>					
+					<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren" Tapped="{connectGoogleD}">
+						<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/account_circle.png" />
+						<kontekst.Text FontSize="15" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">Switch account</kontekst.Text>
+		                <WhilePressed>
+		                    <Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+		                </WhilePressed>				
+					</StackPanel>
+					<kontekst.TextGrey Value="" FontSize="12" Alignment="CenterRight" Margin="0,0,10,0"/>			
+					<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren" Tapped="{disconnectGoogleDrive}">
+						<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/clear.png" />
+						<kontekst.Text FontSize="15" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">Disconnect</kontekst.Text>
+		                <WhilePressed>
+		                    <Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+		                </WhilePressed>				
+					</StackPanel>
+					<kontekst.TextGrey Value="" FontSize="12" Alignment="CenterRight" Margin="0,0,10,0"/>									
+				</Grid>	
+				</WhileTrue>		
+			</WhileTrue>			
+			<kontekst.Separator />
+			<StackPanel Orientation="Horizontal" Margin="10" HitTestMode="LocalBoundsAndChildren" Tapped="{goToEditLocationsPage}">
+				<kontekst.LowerMenuButton File="../assets/bottom_menu_icons/history.png" />
+				<kontekst.Text FontSize="16" TextAlignment="Left" Alignment="Center" Margin="10,0,0,0">Restore</kontekst.Text>
+                <WhilePressed>
+                    <Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+                </WhilePressed>				
+			</StackPanel>	
+			<kontekst.Separator />			
+		</StackPanel>
+		</ScrollView>		
+	</DockPanel>	
+</kontekst.Page>	

@@ -1,0 +1,31 @@
+{
+  "RootNamespace":"com.kontekstai",
+  "Title": "KONTEKST.AI",
+  "Packages": [
+    "Fuse",
+    "FuseJS",
+    "Fuse.GeoLocation",
+    "Fuse.Camera",
+    "Fuse.CameraRoll",
+    "Fuse.Launcher"
+
+  ],
+  "Includes": [
+    "*",
+    "modules/*.js:Bundle",
+    "assets/agents/inverted/*.png:Bundle"
+  ],
+  "Android": {
+      "Icons": {
+          "LDPI": "assets/icons/icon6_ldpi.png",
+          "MDPI": "assets/icons/icon6_mdpi.png",
+          "HDPI": "assets/icons/icon6_hdpi.png",
+          "XHDPI": "assets/icons/icon6_xhdpi.png",
+          "XXHDPI": "assets/icons/icon6_xxhdpi.png",
+          "XXXHDPI": "assets/icons/icon6_xxxhdpi.png",
+      }
+ 	},
+  "Mobile": {
+    "UriScheme": "com.kontekstai"
+  }
+}

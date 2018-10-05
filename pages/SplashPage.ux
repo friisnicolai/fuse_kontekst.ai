@@ -1,0 +1,24 @@
+<Page ux:Class="SplashPage">
+	<Router ux:Dependency="router" />
+	<JavaScript File="SplashPage.js" />
+
+	<Image Layer="Background" File="../assets/logo6.png" Opacity="1" Margin="50">
+		<Activated>
+			<Scale Factor=".3" Duration="5" Easing="QuadraticOut" />
+			<Rotate Degrees="90" Duration="5"/>
+		</Activated>	
+	</Image>
+	<DockPanel ClipToBounds="true">
+		<Grid RowCount="2" Dock="Top" >
+			<StackPanel Alignment="VerticalCenter">
+				<kontekst.Text Alignment="HorizontalCenter" Margin="0,50" FontSize="30" />
+				<kontekst.Text Alignment="HorizontalCenter" Opacity=".5" />
+			</StackPanel>
+
+			
+		</Grid>
+
+		<kontekst.Text Dock="Bottom" Margin="10" Opacity=".5" TextAlignment="Center" FontSize="12">www.kontekstai.com</kontekst.Text>
+		<kontekst.Button Dock="Bottom" Text="Connect..." FontSize="18" Margin="50,0" Alignment="VerticalCenter" Clicked="{connect}" />
+	</DockPanel>
+</Page>

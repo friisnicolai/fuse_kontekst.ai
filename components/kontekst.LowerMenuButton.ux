@@ -1,0 +1,5 @@
+<Image ux:Class="kontekst.LowerMenuButton" File="../assets/bottom_menu_icons/skull.png" Margin="5" Height="30" HitTestMode="LocalBoundsAndChildren">
+	<WhilePressed>
+		<Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+	</WhilePressed>
+</Image>	

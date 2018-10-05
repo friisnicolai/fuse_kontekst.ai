@@ -1,0 +1,45 @@
+<kontekst.Page ux:Class="AgentOverviewPage" Background="#fff2">
+	<!-- <Image Layer="Background" File="../assets/background.png" StretchMode="Fill" Opacity=".7"/> -->
+	<Router ux:Dependency="router" />
+	
+	<ResourceString Key="TabName" Value="AGENTS" />
+	<FileImageSource ux:Key="Icon" File="../assets/tab_icons/agent_white.png" />
+
+	<Activated>
+      	<Callback Handler="{refreshEntriesNotifications}"/>
+    </Activated>
+
+	<JavaScript File="AgentOverviewPage.js" />
+	<DockPanel>
+		<ScrollView>
+			<StackPanel>
+				<Each Items="{agents}">
+					<StackPanel HitTestMode="LocalBoundsAndChildren" Clicked="{goToAgent}" Height="65" ContentAlignment="CenterLeft">
+						<DockPanel Margin="10">
+							<Image File="{icon}" Alignment="Left" Height="40" Dock="Left" />
+							<StackPanel Margin="10,0,0,0">
+								<Grid ColumnCount="2" Columns="6*,auto">
+									<kontekst.TextRegular Value="{name}"/>
+									<kontekst.TextLightSmall Value="{latest_entry.created_time}" />
+								</Grid>
+								<kontekst.TextLight Value="{latest_entry.content_text}" Margin="0,5,5,5"/>
+							</StackPanel>	
+						</DockPanel>	
+						<WhilePressed>
+							<Scale Factor=".95" Duration=".08" Easing="QuadraticOut"/>
+						</WhilePressed>
+						<Rectangle Layer="Background" Color="Black" CornerRadius="4" Margin="3" />
+					</StackPanel>	
+				</Each>	
+			</StackPanel>
+			<PullToReload IsLoading="{isLoading}" ReloadHandler="{reloadHandler}">
+    			<State ux:Binding="Pulling">
+				</State>
+			</PullToReload>
+			<PullToReload IsLoading="{isLoading}" ReloadHandler="{reloadHandler}" Range="SnapMax">
+    			<State ux:Binding="Pulling">
+				</State>
+			</PullToReload>			
+		</ScrollView>
+	</DockPanel>	
+</kontekst.Page>
